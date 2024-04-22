@@ -229,3 +229,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,intellij+iml,eclipse,java
+/practice/.idea
+practice/gradle/wrapper/gradle-wrapper.properties
