@@ -111,7 +111,7 @@ Class<?> vehicle = Class.forName(value); // value 값에 vehicles.Car
 - List<Integer>의 부모는? 없음
 - List<String>의 부모는? 없음
 - 하지만, ```와일드카드```라고 불리는 ```물음표```는 제네릭 타입 목록이면 전부 해당하는 상위타입이다.
-- List<Number>, List<CharSequence>, List<Integer>, List<String>의 부모는? ```List<?>```
+- ```List<Number>```, ```List<CharSequence>```, ```List<Integer>```, ```List<String>```의 부모는? ```List<?>```
 
 ### 그럼 ```List<T>```는?
 - List<T> 에서 T가 어떤 타입이든 List<?>로 받을 수 있다는 뜻
