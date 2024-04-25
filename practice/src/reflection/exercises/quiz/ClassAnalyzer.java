@@ -11,10 +11,10 @@ public class ClassAnalyzer {
         /** Complete the Code **/
 
 
-        popupTypeInfo.setPrimitive(/** Complete the Code **/)
-                .setInterface(/** Complete the Code **/)
-                .setEnum(/** Complete the Code **/)
-                .setName(/** Complete the Code **/)
+        popupTypeInfo.setPrimitive(popupTypeInfo.isPrimitive())
+                .setInterface(popupTypeInfo.isInterface())
+                .setEnum(popupTypeInfo.isEnum())
+                .setName(popupTypeInfo.getName())
                 .setJdk(isJdkClass(inputClass))
                 .addAllInheritedClassNames(getAllInheritedClassNames(inputClass));
 
@@ -27,13 +27,27 @@ public class ClassAnalyzer {
         /** Complete the code
          Hint: What does inputClass.getPackage() return when the class is a primitive type?
          **/
+        return JDK_PACKAGE_PREFIXES.stream()
+                .anyMatch(packagePrefix -> inputClass.getPackage() == null
+                        || inputClass.getPackage().getName().startsWith(packagePrefix));
     }
 
     public static String[] getAllInheritedClassNames(Class<?> inputClass) {
         /** Complete the code
          Hints: What does inputClass.getSuperclass() return when the inputClass doesn't inherit from any class?
          What does inputClass.getSuperclass() return when the inputClass is a primitve type?
-
          **/
+        String[] inheritedClasses;
+        if (inputClass.isInterface()) {
+            inheritedClasses = Arrays.stream(inputClass.getInterfaces())
+                    .map(Class::getSimpleName)
+                    .toArray(String[]::new);
+        } else {
+            Class<?> inheritedClass = inputClass.getSuperclass();
+            inheritedClasses = inheritedClass != null ?
+                    new String[]{inputClass.getSuperclass().getSimpleName()}
+                    : null;
+        }
+        return inheritedClasses;
     }
 }

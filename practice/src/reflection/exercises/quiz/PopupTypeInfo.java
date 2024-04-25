@@ -41,7 +41,7 @@ public class PopupTypeInfo {
     public PopupTypeInfo addAllInheritedClassNames(String[] inheritedClassNames) {
         if (inheritedClassNames != null) {
             this.inheritedClassNames.addAll(Arrays.stream(inheritedClassNames)
-                    .collect(Collectors.toList()));
+                    .toList());
         }
         return this;
     }
