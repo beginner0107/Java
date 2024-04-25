@@ -9,12 +9,10 @@ public class ClassAnalyzer {
         PopupTypeInfo popupTypeInfo = new PopupTypeInfo();
 
         /** Complete the Code **/
-
-
-        popupTypeInfo.setPrimitive(popupTypeInfo.isPrimitive())
-                .setInterface(popupTypeInfo.isInterface())
-                .setEnum(popupTypeInfo.isEnum())
-                .setName(popupTypeInfo.getName())
+        popupTypeInfo.setPrimitive(inputClass.isPrimitive())
+                .setInterface(inputClass.isInterface())
+                .setEnum(inputClass.isEnum())
+                .setName(inputClass.getName())
                 .setJdk(isJdkClass(inputClass))
                 .addAllInheritedClassNames(getAllInheritedClassNames(inputClass));
 
