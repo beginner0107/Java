@@ -11,17 +11,17 @@ public class Main {
     public static void main(String[] args) throws InvocationTargetException, InstantiationException, IllegalAccessException {
 //        printConstructorData(Person.class);
 
-        Address address = (Address) createInstanceWithArguments(Address.class, "First Street", 10);
-        Person person = (Person) createInstanceWithArguments(Person.class, "John", 20);
+        Address address = createInstanceWithArguments(Address.class, "First Street", 10);
+        Person person = createInstanceWithArguments(Person.class, "John", 20);
         System.out.println(person);
         System.out.println(address);
     }
 
-    public static Object createInstanceWithArguments(Class<?> clazz, Object ... args)
+    public static <T> T createInstanceWithArguments(Class<T> clazz, Object ... args)
             throws InvocationTargetException, InstantiationException, IllegalAccessException {
         for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
             if (constructor.getParameterCount() == args.length) {
-                return constructor.newInstance(args);
+                return (T) constructor.newInstance(args);
             }
         }
         System.out.println("An appropriate constructor was not found");
