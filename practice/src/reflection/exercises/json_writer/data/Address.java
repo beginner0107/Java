@@ -8,4 +8,12 @@ public class Address {
         this.street = street;
         this.apartment = apartment;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "street='" + street + '\'' +
+                ", apartment=" + apartment +
+                '}';
+    }
 }
