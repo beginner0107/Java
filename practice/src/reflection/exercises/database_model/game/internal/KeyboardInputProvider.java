@@ -15,6 +15,7 @@ class KeyboardInputProvider implements InputProvider {
         int row;
         int column;
         do {
+            System.out.println("행과 열은 [0, 1, 2] 중에 하나를 입력해주세요. ex) (0,1), (0,0)");
             System.out.print("Please choose row: ");
             row = scanner.nextInt();
             System.out.print("Please choose column: ");
