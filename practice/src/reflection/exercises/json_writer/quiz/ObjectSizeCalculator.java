@@ -1,14 +1,25 @@
 package reflection.exercises.json_writer.quiz;
 
+import java.lang.reflect.Field;
+
 public class ObjectSizeCalculator {
     private static final long HEADER_SIZE = 12;
     private static final long REFERENCE_SIZE = 4;
 
-    public long sizeOfObject(Object input) {
-        /**
-         * Complete your code here
-         */
-        return 0;
+    public long sizeOfObject(Object input) throws IllegalAccessException {
+        long size = HEADER_SIZE + REFERENCE_SIZE;
+        Field[] fields = input.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            Class<?> type = field.getType();
+            if (type.isPrimitive()) {
+                size += sizeOfPrimitiveType(type);
+            } else {
+                size += sizeOfString((String) field.get(input));
+            }
+        }
+
+        return size;
     }
 
 
