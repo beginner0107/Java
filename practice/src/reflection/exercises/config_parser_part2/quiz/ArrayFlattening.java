@@ -16,14 +16,14 @@ public class ArrayFlattening {
             return null;
         }
 
-        ArrayList<T> result = new ArrayList<>();
+        ArrayList<Object> result = new ArrayList<>();
         for (Object argument : arguments) {
             if (argument.getClass().isArray()) {
                 for (int i = 0; i < Array.getLength(argument); i++) {
-                    result.add((T) Array.get(argument, i));
+                    result.add(Array.get(argument, i));
                 }
             } else {
-                result.add((T) argument);
+                result.add(argument);
             }
         }
 
