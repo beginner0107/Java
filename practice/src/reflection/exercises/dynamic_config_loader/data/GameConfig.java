@@ -3,14 +3,9 @@ package reflection.exercises.dynamic_config_loader.data;
 import java.util.Random;
 
 public class GameConfig {
-    private final int releaseYear;
+    private static final int releaseYear = 2000;
     private String gameName;
     private double price;
-
-    public GameConfig() {
-        Random random = new Random();
-        this.releaseYear = random.nextInt(2000);
-    }
 
     public int getReleaseYear() {
         return this.releaseYear;
