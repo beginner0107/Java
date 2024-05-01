@@ -1,7 +1,7 @@
 package reflection.exercises.dynamic_config_loader.data;
 
 public class GameConfig {
-    private int releaseYear;
+    private final int releaseYear = 2004;
     private String gameName;
     private double price;
 
