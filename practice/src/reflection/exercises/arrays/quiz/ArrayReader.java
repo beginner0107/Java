@@ -12,7 +12,7 @@ public class ArrayReader {
         int[] input = new int[]{0, 10, 20, 30, 40};
         String[] names = new String[]{"John", "Michael", "Joe", "David"};
         ArrayReader reader = new ArrayReader();
-        System.out.println(reader.getArrayElement(input, -31));
+        System.out.println(reader.getArrayElement(input, -30));
     }
 
     public Object getArrayElement(Object array, int index) {
@@ -24,10 +24,8 @@ public class ArrayReader {
                 index = length + index;
             }
             element = Array.get(array, index);
-        } else if (index >= length) {
-            index %= length;
-            element = Array.get(array, index);
         } else {
+            index %= length;
             element = Array.get(array, index);
         }
 
