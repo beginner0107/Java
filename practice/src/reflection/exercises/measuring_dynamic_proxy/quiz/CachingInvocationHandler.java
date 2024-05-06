@@ -19,24 +19,23 @@ public class CachingInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        Object result;
-
         try {
-            if (isMethodCacheable(method)) {
-                if (isInCache(method, args)) {
-                    result = getFromCache(method, args);
-                } else {
-                    result = method.invoke(realObject, args);
-                    putInCache(method, args, result);
-                }
-            } else {
-                result = method.invoke(realObject, args);
+            if (!isMethodCacheable(method)) {
+                return method.invoke(realObject, args);
             }
+
+            if (isInCache(method, args)) {
+                return getFromCache(method, args);
+            }
+
+            Object result = method.invoke(realObject, args);
+
+            putInCache(method, args, result);
+
+            return result;
         } catch (InvocationTargetException e) {
             throw e.getTargetException();
         }
-
-        return result;
     }
 
     boolean isMethodCacheable(Method method) {
