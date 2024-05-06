@@ -1,0 +1,11 @@
+# 함수형 프로그래밍
+- 컬렉션과 스트림
+  - Stream은 Collection을 대체하려고 만든것이 아니다.
+  - 조합해서 잘 쓰면 된다.
+- 다섯 형태만 기억하자
+  - consumer : input만 있는 형태
+  - supplier : output만 있는 형태
+  - function : input/output이 모두 있는 형태
+  - predict : 참/거짓을 판별하는 형태
+  - runner : input/output 이 없는 형태
+- 예제코드 : [Functional.java]
