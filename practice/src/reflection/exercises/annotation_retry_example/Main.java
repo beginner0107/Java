@@ -1,29 +1,36 @@
-package reflection.exercises.annotation_init_example;
+package reflection.exercises.annotation_retry_example;
 
-import reflection.exercises.annotation_init_example.annotations.InitializerMethod;
+import reflection.exercises.annotation_retry_example.annotations.InitializerClass;
+import reflection.exercises.annotation_retry_example.annotations.InitializerMethod;
+import reflection.exercises.annotation_retry_example.annotations.RetryOperation;
+import reflection.exercises.annotation_retry_example.annotations.ScanPackages;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
+@ScanPackages({"app", "app.configs", "app.databases", "app.http"})
 public class Main {
 
     public static void main(String[] args) throws Throwable {
-//        initialize("app", "app.configs", "app.databases", "app.http");
-        initialize("app", "app.configs", "app.databases", "app.http");
+        initialize();
     }
 
-    public static void initialize(String... packageNames) throws Throwable {
-        List<Class<?>> classes = getAllClasses(packageNames);
+    public static void initialize() throws Throwable {
+        ScanPackages scanPackages = Main.class.getAnnotation(ScanPackages.class);
+
+        if (scanPackages == null || scanPackages.value().length == 0) {
+            return;
+        }
+
+        List<Class<?>> classes = getAllClasses(scanPackages.value());
 
         for (Class<?> clazz : classes) {
-            if (!clazz.isAnnotationPresent(reflection.exercises.annotation_init_example.annotations.InitializerClass.class)) {
+            if (!clazz.isAnnotationPresent(InitializerClass.class)) {
                 continue;
             }
 
@@ -32,7 +39,33 @@ public class Main {
             Object instance = clazz.getDeclaredConstructor().newInstance();
 
             for (Method method : methods) {
-                method.invoke(instance, method);
+                callInitializingMethod(instance, method);
+            }
+        }
+    }
+
+    private static void callInitializingMethod(Object instance, Method method) throws Throwable {
+        RetryOperation retryOperation = method.getAnnotation(RetryOperation.class);
+
+        int numberOfRetries = retryOperation == null ? 0 : retryOperation.numberOfRetries();
+
+        while (true) {
+            try {
+                method.invoke(instance);
+                break;
+            } catch (InvocationTargetException e) {
+                Throwable targetException = e.getTargetException();
+
+                if (numberOfRetries > 0 && Set.of(retryOperation.retryExceptions()).contains(targetException.getClass())) {
+                    numberOfRetries --;
+
+                    System.out.println("Retrying");
+                    Thread.sleep(retryOperation.durationBetweenRetriesMs());
+                } else if (retryOperation != null) {
+                    throw new Exception(retryOperation.failureMessage(), targetException);
+                } else {
+                    throw targetException;
+                }
             }
         }
     }
@@ -82,7 +115,7 @@ public class Main {
 
         List<Class<?>> classes = new ArrayList<>();
 
-        String customUrl = "reflection.exercises.annotation_init_example.";
+        String customUrl = "reflection.exercises.annotation_retry_example.";
 
         for (Path filePath : files) {
             String fileName = filePath.getFileName().toString();
