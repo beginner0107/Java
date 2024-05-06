@@ -2,6 +2,7 @@ package reflection.exercises.annotation_init_example;
 
 import reflection.exercises.annotation_init_example.annotations.InitializerClass;
 import reflection.exercises.annotation_init_example.annotations.InitializerMethod;
+import reflection.exercises.annotation_init_example.app.AutoSaver;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -12,6 +13,7 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Main {
 
@@ -53,7 +55,7 @@ public class Main {
         for (String packageName : packageNames) {
             String packageRelativePath = packageName.replace('.', '/');
 
-            URI packageUri = Main.class.getResource(packageRelativePath).toURI();
+            URI packageUri = Objects.requireNonNull(Main.class.getResource(packageRelativePath)).toURI();
 
             if (packageUri.getScheme().equals("file")) {
                 Path packageFullPath = Paths.get(packageUri);
@@ -82,13 +84,15 @@ public class Main {
 
         List<Class<?>> classes = new ArrayList<>();
 
+        String customUrl = "reflection.exercises.annotation_init_example.";
+
         for (Path filePath : files) {
             String fileName = filePath.getFileName().toString();
 
             if (fileName.endsWith(".class")) {
                 String classFullName = packageName.isBlank() ?
                         fileName.replaceFirst("\\.class$", "")
-                        : packageName + "." + fileName.replaceFirst("\\.class$", "");
+                        : customUrl + packageName + "." + fileName.replaceFirst("\\.class$", "");
 
                 Class<?> clazz = Class.forName(classFullName);
                 classes.add(clazz);
