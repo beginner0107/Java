@@ -9,6 +9,7 @@ package karatechop;
  **/
 public class Main {
 
+    // 방법 1 : 재귀
     public static int binarySearch(int[] array, int target, int start, int end) {
         if (array.length == 0 || start >= end) return -1;
 
@@ -26,4 +27,5 @@ public class Main {
 
         return -1;
     }
+
 }
