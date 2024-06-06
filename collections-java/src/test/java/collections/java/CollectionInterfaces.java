@@ -1,6 +1,5 @@
 package collections.java;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -50,8 +49,7 @@ public class CollectionInterfaces {
     @Test
     @DisplayName("set")
     public void set() {
-        var coupons = new HashSet<String>();
-        coupons.addAll(List.of("matthew", "tomas", "minjun", "matthew"));
+        var coupons = new HashSet<>(List.of("matthew", "tomas", "minjun", "matthew"));
         assertEquals(3, coupons.size());
     }
 

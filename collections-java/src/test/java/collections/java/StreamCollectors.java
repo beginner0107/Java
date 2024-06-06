@@ -3,12 +3,11 @@ package collections.java;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StreamCollectors {
 
@@ -22,7 +21,7 @@ public class StreamCollectors {
         );
         List<String> names = people.stream()
                 .map(p -> p.name)
-                .collect(Collectors.toList());
+                .toList();
         assertEquals(3, names.size());
         assertEquals("matthew", names.get(0));
     }
@@ -54,7 +53,7 @@ public class StreamCollectors {
                 new Employee("dean", 5400, "it")
         );
 
-        int total = employees.stream().collect(Collectors.summingInt(Employee::salary));
+        int total = employees.stream().mapToInt(Employee::salary).sum();
         assertEquals(44395, total);
     }
 

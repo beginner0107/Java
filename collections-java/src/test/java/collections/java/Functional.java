@@ -17,9 +17,7 @@ public class Functional {
     @Test
     @DisplayName("consumer")
     public void consumer() {
-        Consumer<String> eat = (food) -> {
-            System.out.println(food);
-        };
+        Consumer<String> eat = System.out::println;
         eat.accept("apple");
     }
 
@@ -36,7 +34,7 @@ public class Functional {
     @Test
     @DisplayName("function")
     public void function() {
-        Function<BigDecimal, BigDecimal> exchange = (dallar) -> dallar.multiply(BigDecimal.valueOf(1600));
+        Function<BigDecimal, BigDecimal> exchange = (dollar) -> dollar.multiply(BigDecimal.valueOf(1600));
         BigDecimal result = exchange.apply(BigDecimal.valueOf(43.27));
         assertEquals(BigDecimal.valueOf(69232), result);
     }
@@ -45,9 +43,7 @@ public class Functional {
     @Test
     @DisplayName("predicate")
     public void predicate() {
-        Predicate<String> predicate = (name) -> {
-            return "jan".equals(name);
-        };
+        Predicate<String> predicate = "jan"::equals;
         boolean result = predicate.test("jan");
         assertTrue(result);
     }
@@ -58,14 +54,13 @@ public class Functional {
     public void functionalParams() {
         Function<Integer, Grade> schoolGradeCalculator = (score) -> {
             int gradeNum = score / 10;
-            Grade result = switch (gradeNum) {
+            return switch (gradeNum) {
                 case 9 -> Grade.A;
                 case 8 -> Grade.B;
                 case 7 -> Grade.C;
                 case 6 -> Grade.D;
                 default -> Grade.F;
             };
-            return result;
         };
 
         Grade gradeResult = getGradeByScore(67, schoolGradeCalculator);
