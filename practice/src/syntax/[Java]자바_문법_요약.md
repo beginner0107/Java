@@ -150,7 +150,7 @@ name[0] = 'C'; // 컴파일 오류
 - 바꾸고 싶다면 새로운 문자열을 만들어야 함
 
 ## 리터럴
-- 정수 리터럴
+### 정수 리터럴
 ```java
 int num1 = 1234;
 long num2 = 1234567890L;
@@ -162,3 +162,107 @@ long num4 = 1234567890123123123123; // 컴파일 오류
   - 생략 가능
   - 하지만 int의 범위보다 큰 수일 때 생략하면 컴파일 오류
 
+```java
+int num1 = 0xFFFF;
+int num3 = 0b11001010;
+int num2 = 01234;
+```
+- 16진수 리터럴: 0x
+- 2진수 리터럴: 0b
+- 8진수 리터럴: 0
+
+### 부동 소수점 리터럴
+```java
+float num1 = 10.0F;
+float num2 = 3.14f;
+double num3 = 93423.8374D;
+double num4 = 1231231.323d;
+double num5 = 9323.91;
+```
+- float의 리터럴: F 혹은 f
+- double의 리터럴: D 혹은 d
+  - 생략해도 무방
+  - 보통 생략
+
+### 문자, 문자열 리터럴
+```java
+char ch = 'a';
+String helloWorld = "Hello World!";
+String alphabet = "\u03b1\u03b2\u03b3";
+String hello = "hello";
+```
+- 문자 리터럴: 작은 따옴표
+- 문자열 리터럴: 큰 따옴표
+- 유니코드 표현: \unnnn
+- 이스케이프(escape)문자: \로 시작
+- \' \" \\ \r \n \f \t \b \ddd
+
+### 기타 리터럴
+```java
+String msg = null;
+int num = 12_345_678;
+float pi = 3.14_15F;
+long hexNum = 0xFF_EC_DE_5E;
+```
+- null
+  - 참조형에 사용 가능한 리터럴
+  - 의미: 참조하는 대상이 없음(C의 널 포인터)
+- _
+  - 큰 숫자의 가독성을 높이기 위해 사용 (쉼표 찍듯이)
+  - Java 7부터 사용 가능
+
+## Java의 상수형 변수: final 
+```java
+final int MAX_VALUE = 10;
+MAX_VALUE = 20; // 컴파일 오류
+```
+- Java는 const 대신 final 키워드를 사용
+- 변수 값 변경을 금지
+
+### final 키워드를 붙일 수 있는 곳
+1. 지역변수
+2. 클래스 멤버변수
+3. 메서드 매개변수
+4. 클래스와 메서드
+
+## 주석
+### Javadoc 주석
+- 모든 설명은 /** */ 을 붙인다
+```java
+/**
+ * Returns the sum of the arguments
+ * @param op1 the first value
+ * @param op2 the second value
+ * @return the result
+ */
+public static int add(int op1, int op2) {
+    return op1 + op2;
+}
+```
+- @<태그>를 이용하여 설명을 추가할 수 있음
+  - @param op1 the first value
+  - @param op2 the second value
+  - @return the result
+
+## 연산자
+### 비트 이동(bit shift) 연산자
+```java
+int op = 12;          // (비트 생략) 0000 1100
+
+int twice = op << 1;  // (비트 생략) 0001 1000
+int half = op >> 1;   // (비트 생략) 0000 0110
+```
+- ```<<``` 연산자: 비트를 왼쪽으로 이동
+- ```>>``` 연산자: 비트를 오른쪽으로 이동
+- 몇 칸을 이동하는지는 오른쪽 피연산자로 지정
+
+#### ````>>>>```` 연산자
+```java
+int num1 = -125;    // 1111 1111 1111 1111 1111 1111 1000 0011
+int num2 = -125;    // 1111 1111 1111 1111 1111 1111 1000 0011 : 4294967171
+num1 = num1 >> 1;   // 1111 1111 1111 1111 1111 1111 1100 0001 : -63
+num2 = num2 >>> 1;  // 0111 1111 1111 1111 1111 1111 1100 0001 : 2147483585
+```
+- 부호 없는 비트 이동 연산자
+- 오른쪽으로 이동 후 남는 공간을 '0'으로 채움
+- Java에는 부호 없는 자료형이 없기에 이렇게 연산자를 따로 만듦
