@@ -8,6 +8,10 @@ public class WaterSpray {
 
     private int remainingWaterInMl; // 현재 남아있는 물의 양
 
+    public WaterSpray(int remainingWaterInMl) {
+        this.remainingWaterInMl = remainingWaterInMl;
+    }
+
     public void spray() {
         this.remainingWaterInMl -= Math.min(this.remainingWaterInMl, 5);
     }
