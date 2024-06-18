@@ -3,62 +3,61 @@ package backjoon;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.StringTokenizer;
 
 public class Main {
     public static BufferedReader br;
-    public static StringTokenizer st;
+    //public static StringTokenizer st;
     public static final String SPACES = " ";
-    public static final int[] dy = {0, 0, -1, 1};
-    public static final int[] dx = {1, -1, 0, 0};
-    public static boolean[][] visited;
-    public static int[][] place;
+    public static StringBuilder sb;
+    public static StringTokenizer st;
 
     public static void main(String[] args) throws IOException {
         br = new BufferedReader(new InputStreamReader(System.in));
-        int t = Integer.parseInt(br.readLine());
-        StringBuffer sb = new StringBuffer();
-        while (t-- > 0) {
+        sb = new StringBuilder();
+        int t = getNumber();
+        while(t -- > 0) {
             st = new StringTokenizer(br.readLine(), SPACES);
-            int m = Integer.parseInt(st.nextToken());
-            int n = Integer.parseInt(st.nextToken());
-            int k = Integer.parseInt(st.nextToken());
-            int answer = 0;
+            int x1 = Integer.parseInt(st.nextToken()); // 출발점
+            int y1 = Integer.parseInt(st.nextToken()); // 출발점
+            int x2 = Integer.parseInt(st.nextToken()); // 도착점
+            int y2 = Integer.parseInt(st.nextToken()); // 도착점
 
-            place = new int[m][n];
-            visited = new boolean[m][n];
-            for (int i = 0; i < k; i++) {
+            int n =  Integer.parseInt(br.readLine());
+            int[][]planets = new int[n][3];
+            for(int i = 0; i < n; i++) {
                 st = new StringTokenizer(br.readLine(), SPACES);
-                int y = Integer.parseInt(st.nextToken());
-                int x = Integer.parseInt(st.nextToken());
-                place[y][x] = 1;
+                planets[i][0] = Integer.parseInt(st.nextToken()); // 중심 x 좌표
+                planets[i][1] = Integer.parseInt(st.nextToken()); // 중심 y 좌표
+                planets[i][2] = Integer.parseInt(st.nextToken()); // 반지름
             }
-            for (int i = 0; i < m; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (place[i][j] == 1 && !visited[i][j]) {
-                        answer++;
-                        dfs(i, j);
-                    }
+            int count = 0;
+            for (int i = 0; i < n; i++) {
+                boolean startInside = isInside(x1, y1, planets[i]);
+                boolean endInside = isInside(x2, y2, planets[i]);
+
+                if (startInside != endInside) {
+                    count++;
                 }
             }
-            sb.append(answer).append(System.lineSeparator());
+            System.out.println(count);
         }
-        System.out.println(sb);
         br.close();
     }
 
-    private static void dfs(int y, int x) {
-        visited[y][x] = true;
+    private static boolean isInside(int x, int y, int[] planet) {
+        int cx = planet[0];
+        int cy = planet[1];
+        int r = planet[2];
 
-        for (int i = 0; i < 4; i++) {
-            int ny = y + dy[i];
-            int nx = x + dx[i];
+        int dx = x - cx;
+        int dy = y - cy;
+        int distanceSquared = dx * dx + dy * dy;
 
-            if (ny >= 0 && ny < place.length && nx >= 0 && nx < place[0].length){
-                if (!visited[ny][nx] && place[ny][nx] == 1) {
-                    dfs(ny, nx);
-                }
-            }
-        }
+        return distanceSquared < r * r;
+    }
+
+    private static int getNumber() throws IOException {
+        return Integer.parseInt(br.readLine());
     }
 }
