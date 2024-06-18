@@ -18,8 +18,12 @@ public class FlowerPot {
         return minDailyWaterInMl;
     }
 
-    public void addWater(int amountInMl) {
-        dailyWaterReceived += amountInMl;
+    public void addWater(WaterSpray spray) {
+        int water = spray.getRemainingWaterInMl();
+        spray.spray();
+        water -= spray.getRemainingWaterInMl();
+
+        dailyWaterReceived += water;
     }
 
     public void liveAnotherDay() {

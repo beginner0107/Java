@@ -8,11 +8,7 @@ public class Application3 {
         FlowerPot pot = new FlowerPot(10);
 
         for (int i = 0; i < 2; ++i) {
-            int water = waterSpray.getRemainingWaterInMl();
-            waterSpray.spray();
-            water -= waterSpray.getRemainingWaterInMl();
-
-            pot.addWater(water);
+            pot.addWater(waterSpray);
         }
 
         pot.liveAnotherDay();

@@ -11,7 +11,7 @@ public class Application {
         waterSpray.spray();
         water -= waterSpray.getRemainingWaterInMl();
 
-        pot.addWater(water);
+        //pot.addWater(water);
 
         System.out.printf("pot alive? %s", pot.isAlive());
     }
