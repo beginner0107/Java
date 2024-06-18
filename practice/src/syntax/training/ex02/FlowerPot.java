@@ -4,6 +4,7 @@ public class FlowerPot {
 
     private boolean alive = true;
     private int minDailyWaterInMl;
+    private int dailyWaterReceived = 0;
 
     public FlowerPot(int minDailyWaterInMl) {
         this.minDailyWaterInMl = minDailyWaterInMl;
@@ -18,8 +19,13 @@ public class FlowerPot {
     }
 
     public void addWater(int amountInMl) {
-        if (amountInMl < minDailyWaterInMl) {
+        dailyWaterReceived += amountInMl;
+    }
+
+    public void liveAnotherDay() {
+        if (dailyWaterReceived < minDailyWaterInMl) {
             alive = false;
         }
+        dailyWaterReceived = 0;
     }
 }
