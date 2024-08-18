@@ -280,3 +280,4 @@ collections-java/gradlew
 codetaka/gradlew
 codetaka/gradlew.bat
 /codetaka/.idea
+/library-search/gradle
