@@ -1,63 +1,60 @@
 package backjoon;
 
-import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.OutputStreamWriter;
+import java.util.Scanner;
 
 public class Main {
-    public static BufferedReader br;
-    //public static StringTokenizer st;
-    public static final String SPACES = " ";
-    public static StringBuilder sb;
-    public static StringTokenizer st;
+    static char[][] canvas;
 
-    public static void main(String[] args) throws IOException {
-        br = new BufferedReader(new InputStreamReader(System.in));
-        sb = new StringBuilder();
-        int t = getNumber();
-        while(t -- > 0) {
-            st = new StringTokenizer(br.readLine(), SPACES);
-            int x1 = Integer.parseInt(st.nextToken()); // 출발점
-            int y1 = Integer.parseInt(st.nextToken()); // 출발점
-            int x2 = Integer.parseInt(st.nextToken()); // 도착점
-            int y2 = Integer.parseInt(st.nextToken()); // 도착점
+    static void drawStars(int n, int x, int y) {
+        if (n == 1) {
+            canvas[x][y] = '*';
+            return;
+        }
 
-            int n =  Integer.parseInt(br.readLine());
-            int[][]planets = new int[n][3];
-            for(int i = 0; i < n; i++) {
-                st = new StringTokenizer(br.readLine(), SPACES);
-                planets[i][0] = Integer.parseInt(st.nextToken()); // 중심 x 좌표
-                planets[i][1] = Integer.parseInt(st.nextToken()); // 중심 y 좌표
-                planets[i][2] = Integer.parseInt(st.nextToken()); // 반지름
-            }
-            int count = 0;
-            for (int i = 0; i < n; i++) {
-                boolean startInside = isInside(x1, y1, planets[i]);
-                boolean endInside = isInside(x2, y2, planets[i]);
+        int newSize = n / 3;
 
-                if (startInside != endInside) {
-                    count++;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (i == 1 && j == 1) {
+                    for (int a = 0; a < newSize; a++) {
+                        for (int b = 0; b < newSize; b++) {
+                            canvas[x + a + (newSize * i)][y + b + (newSize * j)] = ' ';
+                        }
+                    }
+                } else {
+                    drawStars(newSize, x + (newSize * i), y + (newSize * j));
                 }
             }
-            System.out.println(count);
         }
-        br.close();
     }
 
-    private static boolean isInside(int x, int y, int[] planet) {
-        int cx = planet[0];
-        int cy = planet[1];
-        int r = planet[2];
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        sc.close();
 
-        int dx = x - cx;
-        int dy = y - cy;
-        int distanceSquared = dx * dx + dy * dy;
+        canvas = new char[N][N];
 
-        return distanceSquared < r * r;
-    }
+        // 캔버스를 별로 초기화
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                canvas[i][j] = '*';
+            }
+        }
 
-    private static int getNumber() throws IOException {
-        return Integer.parseInt(br.readLine());
+        // 별 패턴 그리기
+        drawStars(N, 0, 0);
+
+        // 결과 출력
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        for (int i = 0; i < N; i++) {
+            bw.write(canvas[i]);
+            bw.write('\n');
+        }
+        bw.flush();
+        bw.close();
     }
 }
