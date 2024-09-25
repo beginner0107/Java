@@ -55,10 +55,12 @@ public class CustomMath {
      */
     public List<Integer> getDivisors(int n) {
         List<Integer> divisors = new ArrayList<>();
-        for (int i = 1; i <= sqrt(n); i++) {
+        for (int i = 1; i <= Math.sqrt(n); i++) {
             if (n % i == 0) {
                 divisors.add(i);
-                divisors.add(n / i);
+                if (i != n / i) {  // 중복 제거
+                    divisors.add(n / i);
+                }
             }
         }
         Collections.sort(divisors);
@@ -89,7 +91,7 @@ public class CustomMath {
      * a * b = 최대공약수 * 최소공배수
      */
     public int getLcm(int a, int b) {
-        return (a * b / getGcd(a, b));
+        return a / getGcd(a, b) * b; // 오버플로 방지
     }
 
     /**
@@ -111,14 +113,21 @@ public class CustomMath {
      * 에라토스테네스 체
      */
     public boolean isPrimeEratosthenes(int n) {
-        boolean[] isPrimes = new boolean[n + 1];
-        for (int i = 2; i <= n; i++) {
-            if (isPrimes[i]) continue;
-            for (int j = i * 2; j <= n; j+=i) {
-                isPrimes[j] = true; // 소수가 아닌 값들 체크
+        if (n < 2) return false; // 0과 1은 소수가 아님
+
+        boolean[] isPrime = new boolean[n + 1];
+        Arrays.fill(isPrime, true); // 처음에 모든 수를 소수로 가정
+        isPrime[0] = false;
+        isPrime[1] = false;
+
+        for (int i = 2; i * i <= n; i++) { // i*i <= n까지만 확인
+            if (isPrime[i]) {
+                for (int j = i * i; j <= n; j += i) { // i의 배수들을 소수에서 제외
+                    isPrime[j] = false;
+                }
             }
         }
-        return !isPrimes[n];
+        return isPrime[n];
     }
 
     /**
