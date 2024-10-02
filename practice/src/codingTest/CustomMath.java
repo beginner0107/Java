@@ -2,8 +2,6 @@ package codingTest;
 
 import java.util.*;
 
-import static java.lang.Math.sqrt;
-
 public class CustomMath {
 
     /**
