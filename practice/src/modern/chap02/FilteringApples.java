@@ -31,6 +31,15 @@ public class FilteringApples {
 
         List<Apple> greenApples3 = filter(inventory, new AppleGreenColorPredicate());
         List<Apple> heavyApples2 = filter(inventory, new AppleHeavyWeightPredicate());
+        
+        // 익명 클래스
+        List<Apple> redApples2 = filter(inventory, new ApplePredicate() {
+            @Override
+            public boolean test(Apple apple) {
+                return RED.equals(apple.getColor());
+            }
+        });
+        System.out.println(redApples2);
     }
 
     // Predicate 라는 우리가 정의한 조건의 함수를 값처럼 받아서 쓸 수 있다는 점
