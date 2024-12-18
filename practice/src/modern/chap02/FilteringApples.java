@@ -3,6 +3,7 @@ package modern.chap02;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static modern.chap02.FilteringApples.Color.GREEN;
 import static modern.chap02.FilteringApples.Color.RED;
@@ -40,6 +41,16 @@ public class FilteringApples {
             }
         });
         System.out.println(redApples2);
+
+        // 자바 8의 람다 표현식
+        List<Apple> result = filter(inventory, apple -> RED.equals(apple.getColor()));
+//        List<Apple> result = filter(inventory, (Apple apple) -> RED.equals(apple.getColor()));
+
+        // 리스트 형식으로 추상화
+        List<Apple> redApples3 = filter2(inventory, apple -> RED.equals(apple.getColor()));
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        List<Integer> evenNumber = filter2(numbers, i -> i % 2 == 0);
+
     }
 
     // Predicate 라는 우리가 정의한 조건의 함수를 값처럼 받아서 쓸 수 있다는 점
@@ -48,6 +59,15 @@ public class FilteringApples {
         List<Apple> result = new ArrayList<>();
         for (Apple apple : inventory) {
             if (p.test(apple)) result.add(apple);
+        }
+        return result;
+    }
+    
+    // 더 추상화
+    public static <T>List<T> filter2(List<T> list, Predicate<T> p) {
+        List<T> result = new ArrayList<>();
+        for (T e : list) {
+            if (p.test(e)) result.add(e);
         }
         return result;
     }
