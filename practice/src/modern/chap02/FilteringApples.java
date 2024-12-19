@@ -2,6 +2,7 @@ package modern.chap02;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -51,6 +52,13 @@ public class FilteringApples {
         List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         List<Integer> evenNumber = filter2(numbers, i -> i % 2 == 0);
 
+
+        inventory.sort(new Comparator<Apple>() {
+            public int compare(Apple a1, Apple a2) {
+                return Integer.compare(a1.getWeight(), a2.getWeight());
+            };
+        });
+        System.out.println(inventory);
     }
 
     // Predicate 라는 우리가 정의한 조건의 함수를 값처럼 받아서 쓸 수 있다는 점
