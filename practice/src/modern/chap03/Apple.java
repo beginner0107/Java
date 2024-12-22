@@ -4,6 +4,7 @@ public class Apple implements Fruit{
 
   private int weight = 0;
   private Color color;
+  private String country;
 
   public Apple() {
   }
@@ -15,6 +16,12 @@ public class Apple implements Fruit{
   public Apple(int weight, Color color) {
     this.weight = weight;
     this.color = color;
+  }
+
+  public Apple(int weight, Color color, String country) {
+    this.weight = weight;
+    this.color = color;
+    this.country = country;
   }
 
   public int getWeight() {
@@ -31,6 +38,14 @@ public class Apple implements Fruit{
 
   public void setColor(Color color) {
     this.color = color;
+  }
+
+  public String getCountry() {
+    return country;
+  }
+
+  public void setCountry(String country) {
+    this.country = country;
   }
 
   @SuppressWarnings("boxing")
