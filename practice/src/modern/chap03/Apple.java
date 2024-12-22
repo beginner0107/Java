@@ -1,9 +1,16 @@
 package modern.chap03;
 
-public class Apple {
+public class Apple implements Fruit{
 
   private int weight = 0;
   private Color color;
+
+  public Apple() {
+  }
+
+  public Apple(int weight) {
+    this.weight = weight;
+  }
 
   public Apple(int weight, Color color) {
     this.weight = weight;
