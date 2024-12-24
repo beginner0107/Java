@@ -1,8 +1,9 @@
 package modern.chap05;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * 1. 2011년에 일어난 모든 트랜잭션을 찾아 값을 오름차순으로 정렬하시오
@@ -46,10 +47,9 @@ public class Chap5Practice {
 
     // 2. 거래자가 근무하는 모든 도시를 중복 없이 나열하시오
     public static void quiz2(List<Transaction> transactions) {
-        List<String> cities = transactions.stream()
+        Set<String> cities = transactions.stream()
                 .map(t -> t.getTrader().getCity())
-                .distinct()
-                .toList();
+                .collect(toSet());
         System.out.println(cities);
     }
 
@@ -59,6 +59,7 @@ public class Chap5Practice {
         List<Trader> traders = transactions.stream()
                 .map(Transaction::getTrader)
                 .filter(trader -> cambridge.equals(trader.getCity()))
+                .distinct()
                 .sorted(Comparator.comparing(Trader::getName))
                 .toList();
         System.out.println(traders);
@@ -66,45 +67,50 @@ public class Chap5Practice {
 
     // 4. 모든 거래자의 이름을 알파벳순으로 정렬해서 반환하시오.
     public static void quiz4(List<Transaction> transactions) {
-        List<String> names = transactions.stream()
+        String traderStr = transactions.stream()
                 .map(t -> t.getTrader().getName())
-                .sorted(Comparator.comparingInt(a -> a.charAt(0)))
-                .toList();
-        System.out.println(names);
+                .distinct()
+                .sorted()
+                .reduce("", (n1, n2) -> n1 + n2);
+
+        String traderStr2 = transactions.stream()
+                .map(t -> t.getTrader().getName())
+                .distinct()
+                .sorted()
+                .collect(Collectors.joining());
+        System.out.println(traderStr);
+        System.out.println(traderStr2);
     }
 
     // 5. 밀라노에 거래자가 있는가?
     public static void quiz5(List<Transaction> transactions) {
-        boolean isMilan = transactions.stream()
-                .filter(transaction -> transaction.getTrader().getCity().equals("Milan"))
-                .findAny()
-                .isPresent();
-        System.out.println(isMilan);
+        boolean milanBased = transactions.stream()
+                        .anyMatch(transaction -> transaction.getTrader()
+                                .getCity().equals("Milan"));
+        System.out.println(milanBased);
     }
 
     // 6. 케임브리지에 거주하는 거래자의 모든 트랜잭션값을 출력하시오
     public static void quiz6(List<Transaction> transactions) {
-        List<Transaction> result = transactions.stream()
+        transactions.stream()
                 .filter(transaction -> transaction.getTrader().getCity().equals("Cambridge"))
-                .toList();
-        System.out.println(result);
+                .map(Transaction::getValue)
+                .forEach(System.out::println);
     }
 
     // 7. 전체 트랜잭션 중 최댓값은 얼마인가?
     public static void quiz7(List<Transaction> transactions) {
-        Integer maxNumber = transactions.stream()
+        Optional<Integer> highestValue = transactions.stream()
                 .map(Transaction::getValue)
-                .max(Comparator.naturalOrder())
-                .get();
-        System.out.println(maxNumber);
+                .reduce(Integer::max);
     }
 
     // 8. 전체 트랜잭션 중 최솟값은 얼마인가?
     public static void quiz8(List<Transaction> transactions) {
-        Integer minNumber = transactions.stream()
-                .map(Transaction::getValue)
-                .min(Comparator.naturalOrder())
-                .get();
-        System.out.println(minNumber);
+        Optional<Transaction> smallestTransaction = transactions.stream()
+                .reduce((t1, t2) -> t1.getValue() < t2.getValue() ? t1 : t2);
+
+        Optional<Transaction> smallestTransaction2 = transactions.stream()
+                .min(Comparator.comparingInt(Transaction::getValue));
     }
 }
